@@ -41,6 +41,8 @@ def return_marriage(dirr, codes, age_l = 20, age_u = 39, yr_s=2006, yr_f=2017):
     for yr in range(yr_s, yr_f+1):
         raw_data = importing_data(dirr, codes, yr)
         dist, sex, age, marriage, industry, job, wage, status = codes[yr]
+        if yr >= 2008: # 시도 단위 레벨로 변환
+            raw_data[dist] = raw_data[dist].apply(lambda x: x//100) 
         df[yr]=raw_data[(raw_data[age]>=age_l) & (raw_data[age]<=age_u) & (raw_data[sex]==1)].groupby([dist])[marriage].mean()
     return df
 
@@ -53,6 +55,7 @@ def return_emp(dirr, codes, gender, age_l = 20, age_u = 39, yr_s=2006, yr_f=2017
             raw_data[status] = raw_data[status].apply(lambda x: 0 if x != 11 else 1)
         else:
             raw_data[status] = raw_data[status].apply(lambda x: 0 if x != 1 else 1)
+            raw_data[dist] = raw_data[dist].apply(lambda x: x//100) # 시도 단위 레벨로 변환
         df[yr]=raw_data[(raw_data[age]>=age_l) & (raw_data[age]<=age_u) & (raw_data[sex]==gender)].groupby([dist])[status].mean()
     return df
  
@@ -70,6 +73,7 @@ def return_raw_wage_diff(dirr, codes, age_l = 20, age_u = 39, yr_s=2006, yr_f=20
             df[yr]=df[2*yr+1]/df[2*yr]
             del(df[2*yr]); del(df[2*yr+1])
         else:
+            raw_data[dist] = raw_data[dist].apply(lambda x: x//100) # 시도 단위 레벨로 변환
             df[2*yr]=raw_data[(raw_data[age]>=age_l) & (raw_data[age]<=age_u) & (raw_data[sex]==0) & (raw_data[wage]<=1000) & (raw_data[status]==1)].groupby([dist])[wage].mean()
             df[2*yr+1]=raw_data[(raw_data[age]>=age_l) & (raw_data[age]<=age_u) & (raw_data[sex]==1) & (raw_data[wage]<=1000) & (raw_data[status]==1)].groupby([dist])[wage].mean()
             df[yr]=df[2*yr+1]/df[2*yr]
@@ -82,6 +86,8 @@ def return_unemp(dirr, codes, age_l = 20, age_u = 39, yr_s=2006, yr_f=2017):
     for yr in range(yr_s, yr_f+1):
         raw_data = importing_data(dirr, codes, yr)
         dist, sex, age, marriage, industry, job, wage, status = codes[yr]
+        if yr >= 2008: # 시도 단위 레벨로 변환
+            raw_data[dist] = raw_data[dist].apply(lambda x: x//100) 
         idx = raw_data[(raw_data[age]>=age_l) & (raw_data[age]<=age_u)].groupby([dist]).groups
         if yr == 2006 or yr == 2007:
             for i in idx.keys():
@@ -140,7 +146,4 @@ def return_bartik(dirr, codes, gender, age_l = 20, age_u = 39, yr_s=2006, yr_f=2
             
     return df
 
-men=return_bartik(dirr, codes, 0)
-women=return_bartik(dirr, codes, 1)
-(women/men).to_csv(dirr+'bartik_diff.csv', encoding='utf-8')
 #return_unemp(dirr, codes).to_csv(dirr+'unemp.csv', encoding='utf-8')
