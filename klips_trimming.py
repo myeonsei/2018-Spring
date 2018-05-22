@@ -1,7 +1,7 @@
 import numpy as np; import pandas as pd; from os import listdir
 pdir = 'C:\\Users\\myeon\\Desktop\\응용 계량경제학\\팀플\\KLIPS\\personal\\'
 hdir = 'C:\\Users\\myeon\\Desktop\\응용 계량경제학\\팀플\\KLIPS\\household\\'
-fulldata = pd.DataFrame([], columns = ['ID', 'HHID', 'SEX', 'AGE', 'REGULAR', 'EDU', 'WORKINGHOURS', 'EXTRAWORKING', 'WAGE', 'MARRIAGE', 'STATUS', 'YEAR', 'SPWK', 'SPWT', 'CHILDREN'])
+fulldata = pd.DataFrame([], columns = ['ID', 'HHID', 'SEX', 'AGE', 'REGULAR', 'EDU', 'WORKINGHOURS', 'EXTRAWORKING', 'WAGE', 'MARRIAGE', 'STATUS', 'FULLTIME', 'YEAR', 'SPWK', 'SPWT', 'CHILDREN'])
 yrs = list(range(1,20))
 yrs.remove(2); yrs.remove(3) # 2에는 
 
@@ -17,13 +17,15 @@ for y in yrs:
              'p'+strnum+'1642', 'p'+strnum+'5501', 'p'+strnum+'0102']] #ID, HHID, SEX, AGE, REGULAR, EDU, WORKINGHOURS, WAGE, MARRIAGE
     del(data)
     df.columns = ['ID', 'HHID', 'SEX', 'AGE', 'REGULAR', 'EDU', 'WORKINGHOURS', 'EXTRAWORKING', 'WAGE', 'MARRIAGE', 'STATUS']
+    df = df.fillna(0)
+    df['FULLTIME'] = df['WORKINGHOURS'] + df['EXTRAWORKING']
     df['YEAR'] = y
     idx = df.groupby(['HHID']).groups
     df['SPWK']=0; df['SPWT'] = 0 #; couple = []
     for i in idx.keys():
         if len(idx[i]) > 1:
             df.loc[idx[i], 'SPWK'] = 1
-            df.loc[idx[i][0], 'SPWT'] = df.loc[idx[i][1], 'WORKINGHOURS']; df.loc[idx[i][1], 'SPWT'] = df.loc[idx[i][0], 'WORKINGHOURS']
+            df.loc[idx[i][0], 'SPWT'] = df.loc[idx[i][1], 'FULLTIME']; df.loc[idx[i][1], 'SPWT'] = df.loc[idx[i][0], 'FULLTIME']
     hhdata = pd.read_csv(hdir+str(y)+'h.csv', engine='python', index_col='hhid'+strnum)
     df['CHILDREN'] = list(hhdata.loc[df['HHID'], 'h'+strnum+'1502'])
     del(hhdata)
@@ -32,6 +34,13 @@ for y in yrs:
 fulldata.to_csv('C:\\Users\\myeon\\Desktop\\응용 계량경제학\\팀플\\KLIPS\\trimmed.csv', encoding='utf-8')
 del(fulldata)
 
+## Extra Features ###
 
-# fulldata.apply(lambda x: None if x == -1 else x).to_csv('C:\\Users\\myeon\\Desktop\\응용 계량경제학\\팀플\\KLIPS\\trimmed.csv', encoding='utf-8')
-#     # -1은 다 None으로 바꿔주기.
+import pandas as pd
+
+df = pd.read_csv('C:\\Users\\myeon\\Desktop\\응용 계량경제학\\팀플\\KLIPS\\trimmed.csv', engine = 'python', index_col=0)
+df = df[df['FULLTIME']>0]
+df = df.fillna(0)
+for i in df.index:
+    if df.loc[i, 'SPWK'] == 1 and df.loc[i, 'SPWT'] == 0: df.loc[i, 'SPWT'] = None
+df.to_csv('C:\\Users\\myeon\\Desktop\\응용 계량경제학\\팀플\\KLIPS\\trimmed.csv', encoding='utf-8')
