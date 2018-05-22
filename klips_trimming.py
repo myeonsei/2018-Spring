@@ -14,10 +14,9 @@ for y in yrs:
     data = pd.read_csv(pdir+str(y)+'.csv', engine='python')
     data['id'] = data.iloc[:,0]
     df = data[(data['p'+strnum+'1642']>0) & ((data['p'+strnum+'0102']==10) | (data['p'+strnum+'0102']==20))][['id', 'hhid'+strnum, 'p'+strnum+'0101', 'p'+strnum+'0107', 'p'+strnum+'0317', 'p'+strnum+'0110', 'p'+strnum+'1006', 'p'+strnum+'1012',\
-             'p'+strnum+'1642', 'p'+strnum+'5501', 'p'+strnum+'0102']] #ID, HHID, SEX, AGE, REGULAR, EDU, WORKINGHOURS, WAGE, MARRIAGE
+             'p'+strnum+'1642', 'p'+strnum+'5501', 'p'+strnum+'0102']].fillna(0) #ID, HHID, SEX, AGE, REGULAR, EDU, WORKINGHOURS, WAGE, MARRIAGE
     del(data)
     df.columns = ['ID', 'HHID', 'SEX', 'AGE', 'REGULAR', 'EDU', 'WORKINGHOURS', 'EXTRAWORKING', 'WAGE', 'MARRIAGE', 'STATUS']
-    df = df.fillna(0)
     df['FULLTIME'] = df['WORKINGHOURS'] + df['EXTRAWORKING']
     df['YEAR'] = y
     idx = df.groupby(['HHID']).groups
