@@ -9,3 +9,6 @@
     3. kostat_data_trimmed folder : 위의 코드를 사용하여 전처리된 데이터 csv, dta 파일
     4. make_panel.py : 여러 자료를 합쳐 패널 데이터로 만드는 코드
     && 팀플 지옥 탈출 기원 &&
+
+## Applied Econometrics / 응용 계량경제학
+    1. klips_trimming.py : 연도별 KLIPS 데이터를 패널 데이터로 다듬는 일련의 코드
