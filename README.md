@@ -10,5 +10,8 @@
     4. make_panel.py : 여러 자료를 합쳐 패널 데이터로 만드는 코드
     && 팀플 지옥 탈출 기원 &&
 
+## Introduction to Numerical Method / 수치계산법 개론
+    1. dogleg.m : 다변수 함수의 optimization을 위한 doglog algorithm을 담은 MATLAB 코드
+
 ## Applied Econometrics / 응용 계량경제학
     1. klips_trimming.py : 연도별 KLIPS 데이터를 패널 데이터로 다듬는 일련의 코드
