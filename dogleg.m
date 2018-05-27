@@ -1,10 +1,11 @@
-x1 = 1; x2 = 1; a = 10^-4; d = .4; tol = 10^-8; dist = 1; cnt = 0;
+x1 = -20; x2 = 15; a = 10^-4; d = .4; tol = 10^-8; dist = 1; cnt = 0;
 fprintf('STEP       x1         x2         fx         d\n')
 fprintf('START      %.8f %.8f %.8f %.8f\n',x1,x2,f(x1,x2),d)
 while dist > tol
     [s d newton] = s_dogleg(x1, x2, d);
     f_o = f(x1, x2); df_o = df(x1, x2); f_n = f(x1+s(1), x2+s(2));
     cnt = cnt + 1;
+    pause(1);
     fprintf('[%.2d, A]    %.8f %.8f %.8f %.8f\n',cnt,x1+s(1),x2+s(2),f_n,d)
     while f_n > f_o + a * df_o' * s
        l = - 0.5 * df_o' * s / (f_n - f_o - df_o' * s);
@@ -19,6 +20,7 @@ while dist > tol
        [s d newton] = s_dogleg(x1, x2, d);
        f_n = f(x1+s(1), x2+s(2));
        cnt = cnt + 1;
+       pause(1);
        fprintf('[%.2d, B]    %.8f %.8f %.8f %.8f\n', cnt, x1+s(1),x2+s(2),f_n,d)
        %disp(['STUCK1'])
     end
@@ -38,6 +40,7 @@ while dist > tol
                         fl = 0;
                     end
                     cnt = cnt + 1;
+                    pause(1);
                     fprintf('[%.2d, C]    %.8f %.8f %.8f %.8f\n',cnt,x1+s(1),x2+s(2),f_n,d)
                 else
                     fl = 0;
@@ -54,10 +57,12 @@ while dist > tol
     if real_df <= 0.75 * pred_df
         d = 2 * d;
         cnt = cnt + 1;
+        pause(1);
         fprintf('[%.2d, D]    %.8f %.8f %.8f %.8f\n',cnt,x1+s(1),x2+s(2),f_n,d)
     elseif real_df > 0.1 * pred_df
         d = 0.5 * d;
         cnt = cnt + 1;
+        pause(1);
         fprintf('[%.2d, D]    %.8f %.8f %.8f %.8f\n',cnt,x1+s(1),x2+s(2),f_n,d)
     end
     
@@ -72,11 +77,11 @@ function fx = f(x1, x2) % return f(x)
 end
 
 function dfx = df(x1, x2) % return gradient of f
-    dfx = [4*(x1^3)+2*x1, 2*x2]';
+    dfx = [4*((x1-1)^3)+2*(x1-1), 2*(x2-5)]';
 end
 
 function ddfx = ddf(x1, x2) % return hessian of f
-    ddfx = [12*(x1^2)+2, 0; 0, 2];
+    ddfx = [12*((x1-1)^2)+2, 0; 0, 2];
 end
 
 function h = hessian(x1, x2) % return adjusted hessian of f
