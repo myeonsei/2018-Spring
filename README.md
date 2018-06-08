@@ -13,7 +13,7 @@
 ## Introduction to Numerical Method / 수치계산법 개론
     1. dogleg.m : 다변수 함수의 optimization을 위한 doglog algorithm을 담은 MATLAB 코드
     2. dogleg_results : 위의 두 코드를 실행했을 때 출력된 결과
-    3. MSP~.gif : dogleg.m, dogleg_2.m에서 사용된 함수의 surface를 시각화한 
+    3. MSP~.gif : dogleg.m에서 사용된 함수들의 surface를 시각화한 
 
 ## Applied Econometrics / 응용 계량경제학
     1. klips_trimming.py : 연도별 KLIPS 데이터를 패널 데이터로 다듬는 일련의 코드
