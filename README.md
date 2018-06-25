@@ -9,7 +9,7 @@
     3. kostat_data_trimming3.py : 교수님 코멘트를 반영한 데이터를 추출하기 위한 코드
     4. kostat_data_trimmed folder : 위의 코드를 사용하여 전처리된 데이터 csv, dta 파일
     5. make_panel.py : 여러 자료를 합쳐 패널 데이터로 만드는 코드
-    && 팀플 지옥 탈출 기원 &&
+    * 2018-1_인구와 경제_팀프로젝트_6조.pdf : 위 자료를 사용하여 분석 및 작성한 소논문
 
 ## Introduction to Numerical Method / 수치계산법 개론
     1. dogleg.m : 다변수 함수의 optimization을 위한 doglog algorithm을 담은 MATLAB 코드
